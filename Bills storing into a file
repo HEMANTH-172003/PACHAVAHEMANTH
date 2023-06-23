@@ -1,0 +1,34 @@
+regno   =str(input("Enter Product id:"))
+name    =str(input("Enter Name      :"))
+quantity=str(input("Enter Quantity  :"))
+price   =str(input("Enter Price     :"))
+product=regno+','+name+','+quantity+','+price+'\n'
+
+fd=open('Main.txt','a')
+fd.write(product)
+fd.close()
+
+
+import os
+os.rename('Main.txt','Main.csv')
+
+
+regno   =str(input("Enter Product id:"))
+name    =str(input("Enter Name      :"))
+quantity=str(input("Enter Quantity  :"))
+price   =str(input("Enter Price     :"))
+product=regno+','+name+','+quantity+','+price+'\n'
+
+
+fd=open('Main.csv','a')
+fd.write(product)
+fd.close()
+
+
+
+
+import numpy as np
+ 
+# using loadtxt()
+arr = np.loadtxt("Main.csv",delimiter=",", dtype=str)
+display(arr)
