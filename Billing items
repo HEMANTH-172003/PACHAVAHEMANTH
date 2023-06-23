@@ -1,0 +1,66 @@
+product={}
+product={9:{'name':'PC_1'    ,'price':66 ,'quantity':764},
+         10:{'name':'TV2'  ,'price':380,'quantity':123},
+         11:{'name':'TV_300','price':170,'quantity':712},
+         12:{'name':'Phone_2','price':380,'quantity':435}}
+for key in product:
+  print(key,':',product[key])
+
+
+
+##ADD NEW PRODUCT IN INVENTORY
+
+def insertproduct():
+  id=int(input("enter product id:"))
+  name=str(input("enter product name:"))
+  price=int(input("enter product price:"))
+  quantity=int(input("enter product quantity:"))
+  r={'name':name,'price':price,'quantity':quantity}
+  product[id]=r
+
+insertproduct()
+for key in product:
+  print(key,':',product[key])
+
+
+##Remove product from Inventory
+
+def deleteproduct():
+  id=int(input("enter product id to be deleted:"))
+  product.pop(id)
+fd=open('Sampledata.txt','a')
+fd.write('id,name,quantity,price\n')
+fd.close()
+
+##Deduct Product from Inventory if purchased
+item=int(input("Enter the purchased product id:"))
+amount=int(input("Enter the amount purchased:"))
+if(product[item]['quantity']==amount):
+  product.pop(item)
+else:
+  if(product[item]['quantity']>amount):
+    product[item]['quantity']-=amount
+  else:
+    print("Check the amount")
+m=str(item)+','+product[item]['name']+','+str(amount)+','+str(product[item]['price'])+"\n"
+fd=open('Sampledata.txt','a')
+fd.write(m)
+fd.close()
+
+
+##Generate Bill
+
+
+print("BILL:")
+print("_"*25)
+print("Product id   :",item)
+print("Product name :",product[item]['name'])
+print("Product name :",amount)
+print("Total payment:",product[item]['price']*amount)
+print("_"*25)
+
+
+##Displaying products in inventory
+
+for key in product:
+  print(key,':',product[key])
