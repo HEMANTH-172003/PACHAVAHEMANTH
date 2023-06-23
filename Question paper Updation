@@ -1,0 +1,172 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Question paper auto upload to database</title>
+</head>
+<body>
+    <form action="hackathon.jsp" method="post">
+        <label for="inputname">Enter your subject no</label>
+        <input type="text" name="subject_no" required><br>
+        <label for="inputpass">Enter your subject name</label>
+        <input type="text" name="subject_name" required><br>
+        <label for="link">Enter your link</label>
+        <input type="text" name="paper_link" required><br>
+        <input type="submit" name="submit" value="Submit">
+    </form>
+
+    <%!
+        class Student {
+            private String subject_no;
+            private String subject_name;
+            private String paper_link;
+
+            public Student(String subject_no, String subject_name, String paper_link) {
+                this.subject_no = subject_no;
+                this.subject_name = subject_name;
+                this.paper_link = paper_link;
+            }
+
+            public boolean insertStudentRecord() throws SQLException {
+                //connect to a database
+                dbmsConnection connect = null;
+                PreparedStatement stmt = null;
+                Connection con = null;
+                boolean insert = false;
+                try {
+                    connect = new dbmsConnection("jdbc:mysql://localhost:3306/alekhya","root","1234");
+                    con = connect.getConnection();
+                    String sql = "insert into question values (?,?,?);";
+                    stmt = con.prepareStatement(sql);
+                    stmt.setString(1, subject_no);
+                    stmt.setString(2, subject_name);
+                    stmt.setString(3, paper_link);
+                    int i = stmt.executeUpdate();
+                    if (i > 0) {
+                        insert = true;
+                    } else {
+                        insert = false;
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                } finally {
+                    connect.closeConnection(stmt, con);
+                }
+
+                return insert;
+            }
+        }
+
+        class dbmsConnection {
+            String url;
+            String username;
+            String password;
+
+            public dbmsConnection(String url, String username, String password) {
+                this.url = url;
+                this.username = username;
+                this.password = password;
+            }
+
+            public Connection getConnection() {
+                Connection con = null;
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+                    con = DriverManager.getConnection(url, username, password);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                return con;
+            }
+
+            public void closeConnection(Statement stmt, Connection con) throws SQLException {
+                stmt.close();
+                con.close();
+            }
+        }
+    %>
+
+    <%
+        String sub = request.getParameter("submit");
+        if (sub != null) {
+            String subject_no = request.getParameter("subject_no");
+            String subject_name = request.getParameter("subject_name");
+            String paper_link = request.getParameter("paper_link");
+            if (subject_no != null && subject_name != null && paper_link != null) {
+                Student s = new Student(subject_no, subject_name, paper_link);
+                boolean result = s.insertStudentRecord();
+                if (result) {
+                    out.print("Record Inserted Successfully");
+                } else {
+                    out.print("Damn it..Got some weird error...");
+                }
+            }
+        }
+    %>
+</body>
+</html>
+
+
+##interaction with data base
+
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>welcome to my display page</title>
+</head>
+<body>
+<%
+try
+{
+  
+  Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+  Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/alekhya","root","1234");
+  String sql = "select subject_no,subject_name,paper_link from question;";
+  PreparedStatement stmt = con.prepareStatement(sql);
+  ResultSet rs = stmt.executeQuery();
+  if(rs.next()==false)
+  {
+    out.println("No Records in the table");
+  }
+  else
+  {%>
+  
+  <table border="1">
+  <tr><th>Subject Number</th><th>Subject Name</th><th>Paper Link</th></tr>
+  <% 
+    do
+    {%>
+    
+    <tr><td><%= rs.getString(1)%></td><td><%= rs.getString(2)%></td><td><%= rs.getString(3)%></td></tr>
+    
+    <%}while(rs.next());
+  }
+  
+}
+catch(Exception e)
+{
+System.out.println(e.getMessage());
+e.getStackTrace();
+}
+
+%>
+</table>
+</body>
+</html>
+
+## Storing in data base
+create database alekhya;
+
+use alekhya;
+
+create table question(subject_no varchar(25), subject_name varchar(25), paper_link varchar(100));
+
+select * from question;
