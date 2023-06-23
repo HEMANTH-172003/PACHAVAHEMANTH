@@ -1,0 +1,59 @@
+book ={1 :{'book name':'DBMS',
+           'book id'  :'db1',
+           'quantity' :'400',
+           'generation':'3',
+           'price':'300',
+           'author' : 'ram'},
+     2:{'book name':'M1',
+           'book id' :'1',
+           'quantity':'300',
+           'generation':'5',
+           'price':'400',
+           'author':'IYER'},
+      3 :{'book name':'C ',
+           'book id' :'c1',
+           'quantity' :'590',
+           'generation':'9',
+           'price':'460',
+           'author':'sita ram'},
+     4 :{'book name':'physics',
+           'book id'  :'p1',
+           'quantity' :'250',
+           'generation':'6',
+           'price':'250',
+           'author':'newton'}
+}
+student={ 101 : {'stu name':'ganesh',
+         'gradution year':'2012',
+         'graduation degree':'b tech',
+         book id :print(book[4]),
+         'expiry date': '10 days'},
+          102 : {'stu name':'abdul',
+         'gradution year':'2009',
+         'graduation degree':'b tech',
+         'book id': print(book[2]),
+         'expiry date': '12 days'},
+         103 : {'stu name':'raheem',
+         'gradution year':'2015',
+         'graduation degree':'b tech',
+         'book id':print(book[3]),
+         'expiry date': '20 days',},
+         103 : {'stu name':'arjun',
+         'gradution year':'2018',
+         'graduation degree':'b tech',
+         'book id':print(book[4],
+         'expiry date': '15 days',
+         }
+    }
+id =int(input("enter id:"))
+print(student[id])
+
+
+
+
+OUT PUT::
+enter student  id:103
+{'stu name': 'arjun', 'gradution year': '2018', 'graduation degree': 'b tech', 'book id': '4', 'expiry date': '15 days'}
+enter book id:4
+{'book name': 'physics', 'book id': 'p1', 'quantity': '250', 'generation': '6', 'price': '250', 'author': 'newton'}
+> 
